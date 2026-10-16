@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দাখিল নির্বাচনি পরীক্ষা - আরবি ১ম পত্র</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #e5e7eb;
+            font-family: 'Amiri', 'Traditional Arabic', serif;
+            color: #000;
+            font-size: 16px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .bn-text {
+            font-family: 'Hind Siliguri', sans-serif;
+            direction: ltr;
+        }
+
+        /* Page Container (A4 Setup) */
+        .page {
+            background: #fff;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 18mm 20mm;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        /* Page Top Marker */
+        .page-num-top {
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* Bengali Header Section */
+        .exam-header {
+            text-align: center;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 8px;
+        }
+
+        .exam-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .exam-header h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .exam-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 0 10px;
+        }
+
+        .subject-code {
+            border: 1px solid #000;
+            padding: 1px 6px;
+            letter-spacing: 2px;
+            font-family: sans-serif;
+        }
+
+        /* Section Headings */
+        .section-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+            text-decoration: underline;
+        }
+
+        /* Paragraph / Passage */
+        .passage {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 16.5px;
+        }
+
+        /* Question Blocks */
+        .q-block {
+            margin-bottom: 14px;
+        }
+
+        .q-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-weight: bold;
+            font-size: 16.5px;
+            margin-bottom: 6px;
+        }
+
+        .q-marks {
+            white-space: nowrap;
+            font-family: inherit;
+            margin-right: 15px;
+        }
+
+        .sub-list {
+            list-style: none;
+            padding-right: 15px;
+        }
+
+        .sub-list li {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .sub-list li span.label {
+            font-weight: bold;
+            margin-left: 6px;
+            min-width: 25px;
+        }
+
+        .sub-list-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-right: 15px;
+            margin-bottom: 6px;
+        }
+
+        /* Boxed Words List */
+        .word-box-container {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0 12px 0;
+        }
+
+        .word-box {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .word-box td {
+            border: 1px solid #000;
+            padding: 4px 15px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Table Style */
+        .match-table {
+            width: 90%;
+            margin: 8px auto 12px auto;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        .match-table th, .match-table td {
+            border: 1px solid #000;
+            padding: 4px 10px;
+            font-size: 15.5px;
+        }
+
+        .match-table th {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Poetry Couplet */
+        .couplet {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin: 2px 0;
+            font-weight: 500;
+        }
+
+        .center-or {
+            text-align: center;
+            font-weight: bold;
+            margin: 6px 0;
+            font-size: 17px;
+        }
+
+        /* Print Settings */
+        @media print {
+            body {
+                background: transparent;
+                padding: 0;
+            }
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                min-height: auto;
+                page-break-after: always;
+            }
+            .page:last-child {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== PAGE 1 ==================== -->
+    <div class="page">
+        <!-- Bangla Exam Header -->
+        <div class="exam-header bn-text">
+            <h2>নির্বাচনি পরীক্ষা-২০২৬</h2>
+            <h3>দাখিল দশম শ্রেণি</h3>
+            <h4>বিষয় : আরবি প্রথম পত্র</h4>
+            <div class="meta-info">
+                <div>সময় : ৩ ঘণ্টা</div>
+                <div>বিষয় কোড : <span class="subject-code">103</span></div>
+                <div>পূর্ণমান : ১০০</div>
+            </div>
+        </div>
+
+        <!-- Section A -->
+        <div class="section-title">(ألف) النص المدروس - ٣٠</div>
+
+        <div class="passage">
+            <strong>اقرأ النص التالي ثم أجب عن الأسئلة الملحقة:</strong><br>
+            على الانسان أن يحافظ على البيئة التى يعيش فيها، ولا يفسدها. لانها من اعظم نعم الله على عباده. وفي كثير من بلاد العالم اليوم منظمات، تدعو الى المحافظة على البيئة. وتقوم تلك المنظمات باعمال عديدة، منها : بيان اخطار تلوث البيئة على الإنسان والحيوان والنبات. ومراقبة الحكومات والمؤسسات التي تفسد البيئة، وذكر وسائل المحافظة على البيئة: من وسائل المحافظة على البيئة، التي يدعو اليها الاسلام، غرس الاشجار، ومن الخطإ احراق الغابات، كما يحدث في بعض البلاد الان. قال الرسول صلى الله عليه و سلم : "ان قامت القيامة، وفي يد احدكم فسيلة (نخلة صغيرة) فان استطاع ان لا تقوم حتى يغرسها، فليغرسها". ويطلب هذا الحديث من الانسان، ان يزرع الارض، ويجعلها خضراء. وهذه من افضل الطرق للمحافظة على البيئة، وحمايتها من التلوث.
+        </div>
+
+        <!-- Question 1 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>١. اجب عن الاسئلة الاتية :</span>
+                <span class="q-marks">٨ = ٤ × ٢</span>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> ماذا واجب الانسان لحماية البيئة؟</li>
+                <li><span class="label">(ب)</span> ماذا قال الرسول صلى الله عليه وسلم عن محافظة البيئة؟</li>
+                <li><span class="label">(ج)</span> بأية أعمال تقوم منظمات البيئة؟ اذكر على ضوء النص.</li>
+                <li><span class="label">(د)</span> ما اخطار التلوث علي البيئة؟</li>
+            </ul>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٢. أجب عن الأسئلة المتعلقة بالنص (اربعا فقط) :</span>
+                <span class="q-marks">١٦ = ٤ × ٤</span>
+            </div>
+            
+            <p style="font-weight: bold; margin-bottom: 4px;">(أ) رتب الكلمات التالية لتكون جملا مفيدة :</p>
+            <ul class="sub-list" style="margin-bottom: 8px;">
+                <li><span class="label">١.</span> ان يحافظ، على الانسان، على البيئة.</li>
+                <li><span class="label">٢.</span> لانها، نعم، من اعظم، الله.</li>
+                <li><span class="label">٣.</span> تدعو الى، على البيئة، المحافظة، المنظمات.</li>
+                <li><span class="label">٤.</span> على البيئة، وسائل، ذكر، المحافظة.</li>
+            </ul>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">(ب) استبدل العدد للالفاظ التالية :</p>
+            <div class="sub-list-inline">
+                <span>نعم،</span>
+                <span>عباد،</span>
+                <span>بلاد،</span>
+                <span>الحديث</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 2 ==================== -->
+    <div class="page">
+        <div class="page-num-top">ii</div>
+
+        <div class="q-block">
+            <p style="font-weight: bold; margin-bottom: 4px;">(ج) هات الالفاظ المرادفة للكلمات الآتية :</p>
+            <div class="sub-list-inline" style="margin-bottom: 8px;">
+                <span>منظمات،</span>
+                <span>المحافظة،</span>
+                <span>حماية،</span>
+                <span>العالم.</span>
+            </div>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">(د) اكتب (صحيحا) اذا كانت العبارة صحيحة او (خطأ) اذا كانت العبارة خاطئة مع تصحيح الخطأ :</p>
+            <ul class="sub-list" style="margin-bottom: 8px;">
+                <li><span class="label">١.</span> المحافظة على البيئة من عامة نعم الله على عباده.</li>
+                <li><span class="label">٢.</span> البيئة نعمة صغيرة من نعم الله تعالى على عباده.</li>
+                <li><span class="label">٣.</span> توجد في بلاد العالم منظمات تدعو الى محافظة البيئة.</li>
+                <li><span class="label">٤.</span> غرس الاشجار من أفضل الطرق لحماية البيئة من التلوث.</li>
+            </ul>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">(هـ) استخرج اربع صيغ المضارع من النص ثم حولها الي الماضي:</p>
+            <br>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">(و) هات الالفاظ المتضادة للكلمات الآتية :</p>
+            <div class="sub-list-inline" style="margin-bottom: 8px;">
+                <span>كثير،</span>
+                <span>أخطار،</span>
+                <span>تلوث،</span>
+                <span>غرس.</span>
+            </div>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">(ز) صل بين المجموعتين "أ" و "ب" ليكون المعنى صحيحا:</p>
+            <table class="match-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">(أ)</th>
+                        <th style="width: 50%;">(ب)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>١. على الانسان</td>
+                        <td>غرس الاشجار.</td>
+                    </tr>
+                    <tr>
+                        <td>٢. البيئة من اعظم</td>
+                        <td>ان يحافظ على البيئة</td>
+                    </tr>
+                    <tr>
+                        <td>٣. من وسائل المحافظة</td>
+                        <td>احراق الغابات.</td>
+                    </tr>
+                    <tr>
+                        <td>٤. ومن الخطأ</td>
+                        <td>نعم الله على العباد.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٣. حقق الالفاظ الاتية (ثلاثا فقط) :</span>
+                <span class="q-marks">٦ = ٢ × ٣</span>
+            </div>
+            <div class="sub-list-inline">
+                <span>يعيش،</span>
+                <span>لا يفسد،</span>
+                <span>بيئة،</span>
+                <span>المحافظة،</span>
+                <span>المؤسسات</span>
+            </div>
+        </div>
+
+        <!-- Section B -->
+        <div class="section-title">(ب) النظم : الدرجات : ٢٠</div>
+
+        <!-- Question 4 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٤. أجب عن الاسئلة المفصلة (واحدا فقط) :</span>
+                <span class="q-marks">١٠ = ١ × ١٠</span>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> اكتب خلاصة النظم "الإسلام ديننا" بالعربية.</li>
+                <li><span class="label">(ب)</span> اذكر نبذة من حياة الشاعر "احمد شوقي" مختصرا.</li>
+                <li><span class="label">(ج)</span> اكتب خلاصة القصيدة "حضن الامهات" بالعربية.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 3 ==================== -->
+    <div class="page">
+        <div class="page-num-top">iii</div>
+
+        <!-- Question 5 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٥. أجب عن الاسئلة المؤجزة (واحدا فقط) :</span>
+                <span class="q-marks">٥ = ١ × ٥</span>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> لماذا نعتز ونفتخر بعلم الإسلام؟</li>
+                <li><span class="label">(ب)</span> من اي جهة كان الناس اكفاء؟</li>
+                <li><span class="label">(ج)</span> ماذا رجا الشاعر من الله؟</li>
+            </ul>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٦. اشرح باللغة العربية (واحدا فقط) :</span>
+                <span class="q-marks">٥ = ١ × ٥</span>
+            </div>
+            <ul class="sub-list">
+                <li>
+                    <span class="label">(أ)</span>
+                    <div class="couplet">
+                        <span>هو اول بيت نحفظه</span>
+                        <span>*</span>
+                        <span>بحباة الروح ويحفظنا.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="label">(ب)</span>
+                    <div class="couplet">
+                        <span>وطني احبك لا بديل</span>
+                        <span>*</span>
+                        <span>اتريد من قولي دليل.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="label">(ج)</span>
+                    <div class="couplet">
+                        <span>يظن الناس بي خيرا واني</span>
+                        <span>*</span>
+                        <span>لشر الناس إن لم يعف عني.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Section C -->
+        <div class="section-title">(ج) اختبار المفردات : الدرجات : ٢٠</div>
+
+        <!-- Question 7 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٧. املأ الفراغات بكلمة مناسبة من الصندوق وهناك اكثر من الكلمات اللازمة :</span>
+                <span class="q-marks">١٠ = ٥ × ٢</span>
+            </div>
+            <div class="word-box-container">
+                <table class="word-box">
+                    <tr>
+                        <td>فسجن</td>
+                        <td>عاما</td>
+                        <td>قد ضمن</td>
+                        <td>طعامه</td>
+                        <td>رحم</td>
+                    </tr>
+                </table>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> ............ ولد شريح رجلا ثم هرب الرجل.</li>
+                <li><span class="label">(ب)</span> ............ شريح ولده بالرجل الهارب.</li>
+                <li><span class="label">(ج)</span> وكان ينقل له ............ بيده كل يوم إلى السجن.</li>
+                <li><span class="label">(د)</span> ............ الله شريح القاضي.</li>
+                <li><span class="label">(هـ)</span> فقد أقام العدل والإنصاف بين الناس ستين .........</li>
+            </ul>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٨. املأ الفراغات بكلمة مناسبة من عندك :</span>
+                <span class="q-marks">١٠ = ٥ × ٢</span>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> أمر الله تعالى نبيه ﷺ أن يعبده...... له الدين.</li>
+                <li><span class="label">(ب)</span> لا تقبل الأعمال إلا بشرطين : الإخلاص و...... للرسول ﷺ.</li>
+                <li><span class="label">(ج)</span> على الطالب أن يجتهد في مذاكرته بـ.............</li>
+                <li><span class="label">(د)</span> غضب العابد في المرة الثانية ........ الدينارين.</li>
+                <li><span class="label">(هـ)</span> من كانت هجرته إلى..... فهجرته إلى الله ورسوله.</li>
+            </ul>
+        </div>
+
+        <!-- Section D (Start) -->
+        <div class="section-title">(د) اختبار الكتابة : الدرجات : ٣٠</div>
+
+        <!-- Question 9 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>٩. اكتب حوارا بستة جمل على الاقل من الموضوعات التالية :</span>
+                <span class="q-marks">١٠</span>
+            </div>
+            <ul class="sub-list">
+                <li><span class="label">(أ)</span> الحوار على الرحلة إلى مكة المكرمة.</li>
+                <li><span class="label">(ب)</span> الحوار بين المشتري والبائع في دكان الملابس.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 4 ==================== -->
+    <div class="page">
+        <div class="page-num-top">iv</div>
+
+        <!-- Question 10 -->
+        <div class="q-block">
+            <div class="q-title">
+                <span>١٠. اكتب فقرة عن "القرآن الكريم" على اساس الاجوبة من الاسئلة الآتية :</span>
+                <span class="q-marks">١٠</span>
+            </div>
+            <p style="padding-right: 15px; margin-bottom: 6px;">
+                (أ) ما هو القرآن؟ (ب) متى نزل القرآن الكريم؟ (ج) ما هي انواع سور القران؟ (د) لماذا نزل القرآن؟
+            </p>
+
+            <div class="center-or">أو</div>
+
+            <p style="font-weight: bold; margin-bottom: 4px;">
+                اكتب فقرة عن "المساواة" على اساس الاجوبة من الاسئلة الاتية :
+            </p>
+            <p style="padding-right: 15px;">
+                (أ) ما هي المساواة؟ (ب) في اى جهة تكون المساواة بين الناس؟ (ج) اذكر دليلا من القران او الحديث عن المساواة؟
+            </p>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="q-block" style="margin-top: 20px;">
+            <div class="q-title">
+                <span>١١. ترجم العبارات الاتية باللغة البنغالية (اثنين فقط) :</span>
+                <span class="q-marks">١٠ = ٢ × ٥</span>
+            </div>
+            <ul class="sub-list">
+                <li style="margin-bottom: 12px; display: block;">
+                    <span class="label" style="display: inline-block;">(أ)</span>
+                    على المسلم أن يخلص النية في كل عمل يقوم به حتى يتقبله الله منه؛ لأن الأعمال لا تقبل إلا بشرطين : الإخلاص والمتابعة للرسول ﷺ. قال الله جل جلاله : وما امروا الا ليعبدوا الله مخلصين له الدين حنفاء ويقيموا الصلاة ويؤتوا الزكاة وذلك دين القيمة.
+                </li>
+                <li style="margin-bottom: 12px; display: block;">
+                    <span class="label" style="display: inline-block;">(ب)</span>
+                    الإخلاص صفة لازمة للمسلم إذا كان عاملا أو تاجرا أو طالبا أو غير ذلك؛ فالعامل يتقن عمله لأن الله أمر بإتقان العمل وإحسانه، والتاجر يتقي الله في تجارته، فلا يغالي على الناس، إنما يطلب الربح الحلال دائما، والطالب يجتهد في مذاكرته وتحصيل دروسه، وهو يبتغي مرضاة الله ونفع المسلمين بهذا العلم. وهو أيضا صفة الأنبياء عليهم السلام.
+                </li>
+                <li style="margin-bottom: 8px; display: block;">
+                    <span class="label" style="display: inline-block>(৪) ذهبا خالد الى المدرسة.</li>
+                <li>(৫) كان الله عليم حكيم.</li>
+            </ul>
+        </div>
+
+        <!-- ৩ (ز) -->
+        <div style="margin-bottom: 15px;">
+            <p class="arabic" style="font-weight: 600; display: block; margin-bottom: 5px;">(ز) ركب الجملة (اثنين فقط) :</p>
+            <ul class="sub-list">
+                <li>(১) كان الله عليما حكيما.</li>
+                <li>(২) بسم الله الرحمن الرحيم.</li>
+                <li>(৩) الله خلق السموات والأرض.</li>
+                <li>(৪) إن سعيدا قائم.</li>
+            </ul>
+        </div>
+
+        <!-- ৩ (ح) -->
+        <div>
+            <p class="arabic" style="font-weight: 600; display: block; margin-bottom: 5px;">(ح) استخرج الاسماء غير المنصرفة من الجمل التالية، وبين سبب منع الصرف فيها :</p>
+            <ul class="sub-list">
+                <li>(১) الببغاء خضراء وحمراء.</li>
+                <li>(২) خرج المصلون من المسجد مثنى.</li>
+                <li>(৩) هذا من قبيلة مضر.</li>
+                <li>(৪) فرحت بشرى بنجاحها.</li>
+                <li>(৫) خرجت بشرى من المزرعة.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ================= (ب) الترجمة والانشاء ================= -->
+    <div class="section-header">
+        <h3 class="arabic">(ب) الترجمة والانشاء</h3>
+        <span class="marks">মান : ৪৫</span>
+    </div>
+
+    <!-- ৪ নম্বর প্রশ্ন -->
+    <div class="q-card">
+        <div class="q-title">
+            <span>٤- حول الى اللغة البنغالية (خمسة فقط) :</span>
+            <span>٢ × ٥ = ١٠</span>
+        </div>
+        <ul class="sub-list">
+            <li>(أ) الرحمة صفة محمودة.</li>
+            <li>(ب) ان الشرك لظلم عظيم.</li>
+            <li>(ج) أزهار الحديقة جميلة.</li>
+            <li>(د) الحياء شعبة من الايمان.</li>
+            <li>(هـ) ارحم من في الارض يرحمك من في السماء.</li>
+            <li>(و) الإنسان عبيد الإحسان.</li>
+            <li>(ز) الدنيا مزرعة الآخرة.</li>
+        </ul>
+    </div>
+
+    <!-- ৫ নম্বর প্রশ্ন -->
+    <div class="q-card">
+        <div class="q-title q-title-bn">
+            <span>৫। আরবিতে অনুবাদ কর (যেকোনো পাঁচটি) :</span>
+            <span>২ × ৫ = ১০</span>
+        </div>
+        <ul class="sub-list-bn">
+            <li>(ক) ইমরান জুমার দিন রোজা রেখেছে।</li>
+            <li>(খ) মধ্যম পন্থাই উত্তম পন্থা।</li>
+            <li>(গ) কুরআন হেদায়াতের জন্য অবতীর্ণ হয়েছে।</li>
+            <li>(ঘ) দয়া করে যে, দয়া পায় সে।</li>
+            <li>(ঙ) ছাত্রটি আনন্দিত হয়েছে।</li>
+            <li>(চ) মুহাম্মদ (স) একজন সত্যবাদী রাসূল।</li>
+            <li>(ছ) ইহকাল পরকালের ক্ষেত্রস্বরূপ।</li>
+        </ul>
+    </div>
+
+    <!-- ৬ নম্বর প্রশ্ন -->
+    <div class="q-card">
+        <div class="q-title">
+            <span>٦- দরখাস্ত অথবা পত্র লিখন :</span>
+            <span>মান : ১০</span>
+        </div>
+        <div class="quote-box">
+            اكتب بالعربية طلبا إلى مشرف المدرسة تطلب منه الرخصة لثلاثة أيام.<br>
+            <strong>او-</strong> اكتب رسالة بالعربية إلى أمك ترجو الدعاء للامتحان.
+        </div>
+    </div>
+
+    <!-- ৭ নম্বর প্রশ্ন -->
+    <div class="q-card">
+        <div class="q-title">
+            <span>٧- اكتب مقالة بالعربية من الموضوعات التالية (واحدا فقط) :</span>
+            <span>١٥ × ١ = ١٥</span>
+        </div>
+        <ul class="sub-list" style="list-style-type: disc; padding-right: 25px;">
+            <li>(أ) القران الكريم</li>
+            <li>(ب) قيمة الوقت</li>
+            <li>(ج) المدرسة</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
