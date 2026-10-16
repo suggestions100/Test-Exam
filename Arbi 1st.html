@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>পরীক্ষার প্রশ্নপত্র - আরবি ১ম পত্র</title>
+    <title>পরীক্ষার প্রশ্নপত্র - আরবি ১ম পত্র (অ্যানোটেশন সহ)</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,6 @@
 
         body {
             background-color: #e5e7eb;
-            /* একদম সহজ ও পরিষ্কার স্ট্যান্ডার্ড ফন্ট */
             font-family: Arial, "Segoe UI", Tahoma, sans-serif;
             color: #000;
             font-size: 15px;
@@ -21,7 +20,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 8px;
+            padding: 10px 8px 80px 8px; /* টুলবারের জন্য নিচে একটু ফাঁকা */
             overflow-x: hidden;
         }
 
@@ -30,7 +29,7 @@
             direction: ltr;
         }
 
-        /* পেজ কন্টেইনার - মোবাইলে ১০০% ফিট থাকবে */
+        /* পেজ কন্টেইনার */
         .page {
             background: #ffffff;
             width: 100%;
@@ -41,7 +40,70 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
             position: relative;
             word-wrap: break-word;
-            overflow-wrap: break-word;
+        }
+
+        /* দাগানোর জন্য ক্যানভাস লেয়ার */
+        .draw-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 50;
+            pointer-events: none; /* স্ক্রল মোডে ক্যানভাস অফ থাকবে */
+            touch-action: none;
+        }
+
+        /* পিডিএফ টুলবার (স্ক্রিনের নিচে ভাসমান) */
+        .pdf-toolbar {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            z-index: 1000;
+            direction: ltr;
+        }
+
+        .tool-btn {
+            background: #334155;
+            color: #fff;
+            border: 1px solid #475569;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: Arial, sans-serif;
+            white-space: nowrap;
+        }
+
+        .tool-btn.active {
+            background: #2563eb;
+            border-color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .color-dot.active {
+            outline: 2px solid #38bdf8;
+            transform: scale(1.15);
         }
 
         /* পেজ নম্বর মার্কার */
@@ -159,7 +221,7 @@
             margin-bottom: 6px;
         }
 
-        /* প্রশ্নপত্রে থাকা শূন্যস্থানের বক্স (الصندوق) - মোবাইলে একদম ফিট */
+        /* শূন্যস্থানের বক্স (الصندوق) */
         .word-box-container {
             width: 100%;
             max-width: 480px;
@@ -221,32 +283,14 @@
             font-size: 15px;
         }
 
-        /* কম্পিউটার ও প্রিন্ট সেটিংস (A4 পেপার সেটআপ) */
-        @media (min-width: 820px) {
-            body {
-                padding: 20px 0;
-            }
-            .page {
-                width: 210mm;
-                min-height: 297mm;
-                padding: 18mm 20mm;
-                border-radius: 0;
-            }
-            .word-box-container {
-                width: 80%;
-            }
-            .match-table {
-                width: 85%;
-            }
-            .couplet {
-                width: 80%;
-            }
-        }
-
+        /* প্রিন্ট সেটিংস */
         @media print {
             body {
                 background: transparent;
                 padding: 0;
+            }
+            .pdf-toolbar {
+                display: none !important;
             }
             .page {
                 width: 100% !important;
@@ -265,9 +309,24 @@
 </head>
 <body>
 
+    <!-- ভাসমান পিডিএফ অ্যানোটেশন টুলবার -->
+    <div class="pdf-toolbar">
+        <button class="tool-btn active" id="btn-scroll" onclick="setMode('scroll')">👆 স্ক্রল</button>
+        <button class="tool-btn" id="btn-pen" onclick="setMode('pen')">✏️ কলম</button>
+        <button class="tool-btn" id="btn-eraser" onclick="setMode('eraser')">🧼 রাবার</button>
+        
+        <!-- রঙের অপশন -->
+        <span class="color-dot active" style="background: #e11d48;" onclick="setColor('#e11d48', 2.5)" title="লাল কলম"></span>
+        <span class="color-dot" style="background: #2563eb;" onclick="setColor('#2563eb', 2.5)" title="নীল কলম"></span>
+        <span class="color-dot" style="background: rgba(234, 179, 8, 0.45); border-color: #ca8a04;" onclick="setColor('rgba(234, 179, 8, 0.45)', 14)" title="হাইলাইটার"></span>
+        
+        <button class="tool-btn" onclick="clearCurrentPage()" style="background: #991b1b;">🗑️ মুছুন</button>
+    </div>
+
     <!-- ==================== PAGE 1 ==================== -->
-    <div class="page">
-        <!-- বাংলা হেডার -->
+    <div class="page" id="page-1">
+        <canvas class="draw-canvas"></canvas>
+
         <div class="exam-header bn-text">
             <h2>নির্বাচনি পরীক্ষা-২০২৬</h2>
             <h3>দাখিল দশম শ্রেণি</h3>
@@ -279,7 +338,6 @@
             </div>
         </div>
 
-        <!-- বিভাগ (ألف) -->
         <div class="section-title">(ألف) النص المدروس - ٣٠</div>
 
         <div class="passage">
@@ -287,7 +345,6 @@
             على الانسان أن يحافظ على البيئة التى يعيش فيها، ولا يفسدها. لانها من اعظم نعم الله على عباده. وفي كثير من بلاد العالم اليوم منظمات، تدعو الى المحافظة على البيئة. وتقوم تلك المنظمات باعمال عديدة، منها : بيان اخطار تلوث البيئة على الإنسان والحيوان والنبات. ومراقبة الحكومات والمؤسسات التي تفسد البيئة، وذكر وسائل المحافظة على البيئة: من وسائل المحافظة على البيئة، التي يدعو اليها الاسلام، غرس الاشجار، ومن الخطإ احراق الغابات، كما يحدث في بعض البلاد الان. قال الرسول صلى الله عليه و سلم : "ان قامت القيامة، وفي يد احدكم فسيلة (نخلة صغيرة) فان استطاع ان لا تقوم حتى يغرسها، فليغرسها". ويطلب هذا الحديث من الانسان، ان يزرع الارض، ويجعلها خضراء. وهذه من افضل الطرق للمحافظة على البيئة، وحمايتها من التلوث.
         </div>
 
-        <!-- প্রশ্ন ১ -->
         <div class="q-block">
             <div class="q-title">
                 <span>١. اجب عن الاسئلة الاتية :</span>
@@ -301,7 +358,6 @@
             </ul>
         </div>
 
-        <!-- প্রশ্ন ২ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٢. أجب عن الأسئلة المتعلقة بالنص (اربعا فقط) :</span>
@@ -327,7 +383,9 @@
     </div>
 
     <!-- ==================== PAGE 2 ==================== -->
-    <div class="page">
+    <div class="page" id="page-2">
+        <canvas class="draw-canvas"></canvas>
+
         <div class="page-num-top">ii</div>
 
         <div class="q-block">
@@ -386,7 +444,6 @@
             </table>
         </div>
 
-        <!-- প্রশ্ন ৩ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٣. حقق الالفاظ الاتية (ثلاثا فقط) :</span>
@@ -401,10 +458,8 @@
             </div>
         </div>
 
-        <!-- বিভাগ (ب) -->
         <div class="section-title">(ب) النظم : الدرجات : ٢٠</div>
 
-        <!-- প্রশ্ন ৪ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٤. أجب عن الاسئلة المفصلة (واحدا فقط) :</span>
@@ -419,10 +474,11 @@
     </div>
 
     <!-- ==================== PAGE 3 ==================== -->
-    <div class="page">
+    <div class="page" id="page-3">
+        <canvas class="draw-canvas"></canvas>
+
         <div class="page-num-top">iii</div>
 
-        <!-- প্রশ্ন ৫ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٥. أجب عن الاسئلة المؤجزة (واحدا فقط) :</span>
@@ -435,7 +491,6 @@
             </ul>
         </div>
 
-        <!-- প্রশ্ন ৬ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٦. اشرح باللغة العربية (واحدا فقط) :</span>
@@ -469,10 +524,8 @@
             </ul>
         </div>
 
-        <!-- বিভাগ (ج) -->
         <div class="section-title">(ج) اختبار المفردات : الدرجات : ٢٠</div>
 
-        <!-- প্রশ্ন ৭ : শূন্যস্থানের বক্স -->
         <div class="q-block">
             <div class="q-title">
                 <span>٧. املأ الفراغات بكلمة مناسبة من الصندوق وهناك اكثر من الكلمات اللازمة :</span>
@@ -482,7 +535,7 @@
                 <span class="q-marks" style="font-weight: bold;">١٠ = ٥ × ٢</span>
             </div>
 
-            <!-- প্রশ্নের মতো ৫ ঘরের বক্স -->
+            <!-- শূন্যস্থানের ৫ ঘরের বক্স -->
             <div class="word-box-container">
                 <table class="word-box">
                     <tr>
@@ -504,7 +557,6 @@
             </ul>
         </div>
 
-        <!-- প্রশ্ন ৮ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٨. املأ الفراغات بكلمة مناسبة من عندك :</span>
@@ -519,10 +571,8 @@
             </ul>
         </div>
 
-        <!-- বিভাগ (د) -->
         <div class="section-title">(د) اختبار الكتابة : الدرجات : ٣٠</div>
 
-        <!-- প্রশ্ন ৯ -->
         <div class="q-block">
             <div class="q-title">
                 <span>٩. اكتب حوارا بستة جمل على الاقل من الموضوعات التالية :</span>
@@ -536,17 +586,18 @@
     </div>
 
     <!-- ==================== PAGE 4 ==================== -->
-    <div class="page">
+    <div class="page" id="page-4">
+        <canvas class="draw-canvas"></canvas>
+
         <div class="page-num-top">iv</div>
 
-        <!-- প্রশ্ন ১০ -->
         <div class="q-block">
             <div class="q-title">
                 <span>١٠. اكتب فقرة عن "القرآن الكريم" على اساس الاجوبة من الاسئلة الآتية :</span>
                 <span class="q-marks">١٠</span>
             </div>
             <p style="padding-right: 5px; margin-bottom: 6px;">
-                                (أ) ما هو القرآن؟ (ب) متى نزل القرآن الكريم؟ (ج) ما هي انواع سور القران؟ (د) لماذا نزل القرآن؟
+                (أ) ما هو القرآن؟ (ب) متى نزل القرآن الكريم؟ (ج) ما هي انواع سور القران؟ (د) لماذا نزل القرآن؟
             </p>
 
             <div class="center-or">أو</div>
@@ -559,7 +610,6 @@
             </p>
         </div>
 
-        <!-- প্রশ্ন ১১ -->
         <div class="q-block" style="margin-top: 15px;">
             <div class="q-title">
                 <span>١١. ترجم العبارات الاتية باللغة البنغالية (اثنين فقط) :</span>
@@ -582,5 +632,142 @@
         </div>
     </div>
 
+    <!-- ড্রয়িং এবং অ্যানোটেশন স্ক্রিপ্ট -->
+    <script>
+        let currentMode = 'scroll'; // 'scroll', 'pen', 'eraser'
+        let currentColor = '#e11d48';
+        let currentLineWidth = 2.5;
+
+        // ক্যানভাস সাইজ ইনিশিয়ালাইজেশন
+        function setupCanvases() {
+            document.querySelectorAll('.page').forEach(page => {
+                const canvas = page.querySelector('.draw-canvas');
+                if (!canvas) return;
+                
+                // পৃষ্ঠা সাইজ অনুযায়ী ক্যানভাস অ্যাডজাস্ট
+                canvas.width = page.clientWidth;
+                canvas.height = page.clientHeight;
+                
+                attachCanvasEvents(canvas);
+            });
+        }
+
+        window.addEventListener('load', setupCanvases);
+        window.addEventListener('resize', () => {
+            // উইন্ডো সাইজ পরিবর্তন হলে ক্যানভাস ঠিক রাখা
+            document.querySelectorAll('.page').forEach(page => {
+                const canvas = page.querySelector('.draw-canvas');
+                if (canvas && (canvas.width !== page.clientWidth || canvas.height !== page.clientHeight)) {
+                    canvas.width = page.clientWidth;
+                    canvas.height = page.clientHeight;
+                }
+            });
+        });
+
+        // মোড পরিবর্তন
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btn-scroll').classList.toggle('active', mode === 'scroll');
+            document.getElementById('btn-pen').classList.toggle('active', mode === 'pen');
+            document.getElementById('btn-eraser').classList.toggle('active', mode === 'eraser');
+
+            // ক্যানভাসে টাচ অন/অফ করা
+            document.querySelectorAll('.draw-canvas').forEach(c => {
+                c.style.pointerEvents = (mode === 'scroll') ? 'none' : 'auto';
+            });
+        }
+
+        // রঙ ও সাইজ পরিবর্তন
+        function setColor(color, size) {
+            currentColor = color;
+            currentLineWidth = size;
+            setMode('pen');
+
+            // রঙের বর্ডারে অ্যাক্টিভ ক্লাস দেওয়া
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('onclick').includes(color)) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        // ক্যানভাসে ইভেন্ট যুক্ত করা (মাউস এবং টাচ)
+        function attachCanvasEvents(canvas) {
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0, lastY = 0;
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+
+            function start(e) {
+                if (currentMode === 'scroll') return;
+                isDrawing = true;
+                const pos = getPos(e);
+                lastX = pos.x;
+                lastY = pos.y;
+            }
+
+            function move(e) {
+                if (!isDrawing || currentMode === 'scroll') return;
+                e.preventDefault(); // মোবাইলে টাচ করার সময় স্ক্রল হওয়া আটকাবে
+                
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                if (currentMode === 'eraser') {
+                    // রাবার দিয়ে মোছা
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.lineWidth = 18;
+                } else {
+                    // কলম বা হাইলাইটার দিয়ে দাগানো
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = currentColor;
+                    ctx.lineWidth = currentLineWidth;
+                }
+
+                ctx.stroke();
+                lastX = pos.x;
+                lastY = pos.y;
+            }
+
+            function stop() {
+                isDrawing = false;
+            }
+
+            // মাউস ইভেন্ট
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', move);
+            canvas.addEventListener('mouseup', stop);
+            canvas.addEventListener('mouseleave', stop);
+
+            // টাচ ইভেন্ট (মোবাইল)
+            canvas.addEventListener('touchstart', start, { passive: false });
+            canvas.addEventListener('touchmove', move, { passive: false });
+            canvas.addEventListener('touchend', stop);
+        }
+
+        // দাগ মুছার বাটন
+        function clearCurrentPage() {
+            if (confirm("আপনি কি এই পৃষ্ঠার সমস্ত দাগ মুছে ফেলতে চান?")) {
+                document.querySelectorAll('.draw-canvas').forEach(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                });
+            }
+        }
+    </script>
 </body>
 </html>
