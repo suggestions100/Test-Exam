@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>পরীক্ষার প্রশ্নপত্র - আরবি ১ম পত্র (অ্যানোটেশন সহ)</title>
+    <title>দাখিল নির্বাচনি পরীক্ষা - আরবি ১ম পত্র</title>
     <style>
         * {
             box-sizing: border-box;
@@ -20,7 +20,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 8px 80px 8px; /* টুলবারের জন্য নিচে একটু ফাঁকা */
+            padding: 10px 8px 100px 8px;
             overflow-x: hidden;
         }
 
@@ -49,61 +49,187 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 50;
-            pointer-events: none; /* স্ক্রল মোডে ক্যানভাস অফ থাকবে */
+            z-index: 40;
+            pointer-events: none;
             touch-action: none;
         }
 
-        /* পিডিএফ টুলবার (স্ক্রিনের নিচে ভাসমান) */
-        .pdf-toolbar {
+        /* ================= ড্র্যাগেবল ভাসমান টুলবক্স ================= */
+        .annotation-container {
             position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e293b;
-            padding: 6px 12px;
-            border-radius: 50px;
+            bottom: 25px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            direction: ltr;
+            user-select: none;
+            touch-action: none;
+        }
+
+        /* টগল বাটন */
+        .toggle-btn {
+            width: 52px;
+            height: 52px;
+            background: #EDE8FE;
+            border-radius: 16px;
+            border: 2px solid #DDD6FE;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(109, 40, 217, 0.3);
+            transition: transform 0.1s ease;
+            flex-shrink: 0;
+        }
+
+        .toggle-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* উল্লম্ব টুলবার */
+        .vertical-toolbar {
+            background: #ffffff;
+            border-radius: 36px;
+            padding: 10px 6px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+            border: 1px solid #E2E8F0;
+            animation: popUp 0.2s ease forwards;
+        }
+
+        .vertical-toolbar.open {
+            display: flex;
+        }
+
+        @keyframes popUp {
+            from { opacity: 0; transform: translateY(12px) scale(0.92); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .tool-item {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            position: relative;
+            transition: background 0.15s;
+        }
+
+        .tool-item.active {
+            background: #E0EDFF;
+        }
+
+        .tool-item svg {
+            width: 22px;
+            height: 22px;
+            stroke: #1E293B;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .color-indicator {
+            width: 18px;
+            height: 4px;
+            border-radius: 10px;
+            margin-top: 2px;
+        }
+
+        /* ================= কালার ও সাইজ কন্ট্রোল প্যানেল ================= */
+        .settings-panel {
+            position: absolute;
+            right: 65px;
+            bottom: 0;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 12px 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 1px solid #E2E8F0;
+            width: 210px;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        .settings-panel.open {
+            display: flex;
+        }
+
+        .panel-header {
+            font-weight: bold;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #F1F5F9;
+            padding-bottom: 4px;
+        }
+
+        .color-list {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .color-bubble {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .color-bubble.selected {
+            outline: 2.5px solid #2563eb;
+            transform: scale(1.15);
+        }
+
+        .size-box {
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-            z-index: 1000;
-            direction: ltr;
         }
 
-        .tool-btn {
-            background: #334155;
-            color: #fff;
-            border: 1px solid #475569;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 13px;
+        .size-slider {
+            flex-grow: 1;
+            height: 6px;
+            accent-color: #2563eb;
             cursor: pointer;
+        }
+
+        .preview-dot-container {
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-family: Arial, sans-serif;
-            white-space: nowrap;
-        }
-
-        .tool-btn.active {
-            background: #2563eb;
-            border-color: #60a5fa;
-            font-weight: bold;
-        }
-
-        .color-dot {
-            width: 22px;
-            height: 22px;
+            justify-content: center;
+            background: #F8FAFC;
             border-radius: 50%;
-            border: 2px solid #fff;
-            cursor: pointer;
-            display: inline-block;
+            border: 1px solid #E2E8F0;
         }
 
-        .color-dot.active {
-            outline: 2px solid #38bdf8;
-            transform: scale(1.15);
+        .preview-dot {
+            background: #FF3B30;
+            border-radius: 50%;
+            transition: all 0.1s ease;
         }
 
         /* পেজ নম্বর মার্কার */
@@ -165,7 +291,6 @@
             text-decoration: underline;
         }
 
-        /* মূল অনুচ্ছেদ */
         .passage {
             text-align: justify;
             text-justify: inter-word;
@@ -174,7 +299,6 @@
             font-size: 15px;
         }
 
-        /* প্রশ্ন ব্লক */
         .q-block {
             margin-bottom: 14px;
         }
@@ -283,13 +407,33 @@
             font-size: 15px;
         }
 
-        /* প্রিন্ট সেটিংস */
+        @media (min-width: 820px) {
+            body {
+                padding: 20px 0 100px 0;
+            }
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 18mm 20mm;
+                border-radius: 0;
+            }
+            .word-box-container {
+                width: 80%;
+            }
+            .match-table {
+                width: 85%;
+            }
+            .couplet {
+                width: 80%;
+            }
+        }
+
         @media print {
             body {
                 background: transparent;
                 padding: 0;
             }
-            .pdf-toolbar {
+            .annotation-container, .settings-panel {
                 display: none !important;
             }
             .page {
@@ -309,18 +453,89 @@
 </head>
 <body>
 
-    <!-- ভাসমান পিডিএফ অ্যানোটেশন টুলবার -->
-    <div class="pdf-toolbar">
-        <button class="tool-btn active" id="btn-scroll" onclick="setMode('scroll')">👆 স্ক্রল</button>
-        <button class="tool-btn" id="btn-pen" onclick="setMode('pen')">✏️ কলম</button>
-        <button class="tool-btn" id="btn-eraser" onclick="setMode('eraser')">🧼 রাবার</button>
+    <!-- ================= ড্র্যাগেবল ভাসমান টুলবক্স ও সাব-প্যানেল ================= -->
+    <div class="annotation-container" id="draggableToolbar">
         
-        <!-- রঙের অপশন -->
-        <span class="color-dot active" style="background: #e11d48;" onclick="setColor('#e11d48', 2.5)" title="লাল কলম"></span>
-        <span class="color-dot" style="background: #2563eb;" onclick="setColor('#2563eb', 2.5)" title="নীল কলম"></span>
-        <span class="color-dot" style="background: rgba(234, 179, 8, 0.45); border-color: #ca8a04;" onclick="setColor('rgba(234, 179, 8, 0.45)', 14)" title="হাইলাইটার"></span>
-        
-        <button class="tool-btn" onclick="clearCurrentPage()" style="background: #991b1b;">🗑️ মুছুন</button>
+        <!-- কালি ও রঙ পরিবর্তনের সেটিংস প্যানেল -->
+        <div class="settings-panel" id="settingsPanel">
+            <div class="panel-header">
+                <span id="panelTitle">কালার ও সাইজ</span>
+                <span style="cursor:pointer; font-size:16px;" onclick="closeSettings()">✕</span>
+            </div>
+            
+            <!-- কালার বাবলস (পেন বা হাইলাইটার অনুযায়ী পরিবর্তন হবে) -->
+            <div class="color-list" id="colorList"></div>
+
+            <!-- কালি ছোট/বড় করার স্লাইডার -->
+            <div style="font-size:12px; color:#64748B;">কালির সাইজ (থিকনেস):</div>
+            <div class="size-box">
+                <input type="range" class="size-slider" id="sizeSlider" min="1" max="40" value="3" oninput="changeSize(this.value)">
+                <div class="preview-dot-container">
+                    <div class="preview-dot" id="previewDot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- উল্লম্ব টুলবার -->
+        <div class="vertical-toolbar" id="toolbar">
+            <!-- রিডু -->
+            <button class="tool-item" onclick="redo()" title="Redo (সামনে যান)">
+                <svg viewBox="0 0 24 24">
+                    <path d="m15 14 5-5-5-5"/>
+                    <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/>
+                </svg>
+            </button>
+
+            <!-- আনডু -->
+            <button class="tool-item" onclick="undo()" title="Undo (পেছনে যান)">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 14 4 9l5-5"/>
+                    <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
+                </svg>
+            </button>
+
+            <!-- রাবার -->
+            <button class="tool-item" id="btn-eraser" onclick="selectTool('eraser')" title="রাবার (মোছার জন্য)">
+                <svg viewBox="0 0 24 24">
+                    <path d="m18 13-6-6-7.5 7.5a2.12 2.12 0 0 0 0 3L7 20h12v-2l-4-4"/>
+                    <line x1="7" y1="20" x2="17" y2="20"/>
+                </svg>
+            </button>
+
+            <!-- হাইলাইটার -->
+            <button class="tool-item" id="btn-highlighter" onclick="selectTool('highlighter')" title="হাইলাইটার">
+                <svg viewBox="0 0 24 24">
+                    <path d="m14 4 6 6-9 9H5v-6l9-9zM18 10l-4-4"/>
+                    <path d="M3 21h6"/>
+                </svg>
+                <span class="color-indicator" id="highlighter-indicator" style="background: #FACC15;"></span>
+            </button>
+
+            <!-- পেন -->
+            <button class="tool-item active" id="btn-pen" onclick="selectTool('pen')" title="কলম">
+                <svg viewBox="0 0 24 24" style="fill: #1E293B;">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                <span class="color-indicator" id="pen-indicator" style="background: #FF3B30;"></span>
+            </button>
+
+            <!-- কালার ও সাইজ কন্ট্রোল বাটন -->
+            <button class="tool-item" onclick="toggleSettings()" title="কালার ও সাইজ সেটিংস" style="background: #F1F5F9;">
+                <svg viewBox="0 0 24 24" style="stroke: #2563eb;">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- টগল ও ড্র্যাগ হ্যান্ডেল বাটন -->
+        <button class="toggle-btn" id="toggleBtn" title="ক্লিক করে খুলুন অথবা চেপে ধরে যে কোনো জায়গায় সরান">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 18.5 3 20l1.5-4L16.5 3.5z"></path>
+                <path d="M4 8c2-2 4 0 5-1s2-3 4-2"></path>
+                <path d="M14 17c1 2 3 3 5 1"></path>
+            </svg>
+        </button>
     </div>
 
     <!-- ==================== PAGE 1 ==================== -->
@@ -535,7 +750,6 @@
                 <span class="q-marks" style="font-weight: bold;">١٠ = ٥ × ٢</span>
             </div>
 
-            <!-- শূন্যস্থানের ৫ ঘরের বক্স -->
             <div class="word-box-container">
                 <table class="word-box">
                     <tr>
@@ -632,142 +846,345 @@
         </div>
     </div>
 
-    <!-- ড্রয়িং এবং অ্যানোটেশন স্ক্রিপ্ট -->
+    <!-- ================= আধুনিক অ্যানোটেশন স্ক্রিপ্ট ================= -->
     <script>
-        let currentMode = 'scroll'; // 'scroll', 'pen', 'eraser'
-        let currentColor = '#e11d48';
-        let currentLineWidth = 2.5;
+        let isToolbarOpen = false;
+        let isSettingsOpen = false;
+        let currentTool = 'pen'; // 'pen', 'highlighter', 'eraser'
+        let activeCanvas = null;
 
-        // ক্যানভাস সাইজ ইনিশিয়ালাইজেশন
-        function setupCanvases() {
+        // সেটিংস ডিফল্ট
+        let penColor = '#FF3B30';
+        let penSize = 3;
+        
+        let highlighterColor = 'rgba(250, 204, 21, 0.45)';
+        let highlighterSize = 18;
+
+        let eraserSize = 25;
+
+        // কালার প্যালেট
+        const penColors = ['#FF3B30', '#007AFF', '#111827', '#10B981'];
+        const highlighterColors = [
+            'rgba(250, 204, 21, 0.45)', // হলুদ
+            'rgba(52, 199, 89, 0.4)',    // সবুজ
+            'rgba(255, 149, 0, 0.4)',   // কমলা
+            'rgba(175, 82, 222, 0.35)'  // বেগুনি
+        ];
+
+        const history = new Map();
+
+        // ক্যানভাস প্রস্তুত করা
+        function initCanvases() {
             document.querySelectorAll('.page').forEach(page => {
                 const canvas = page.querySelector('.draw-canvas');
                 if (!canvas) return;
-                
-                // পৃষ্ঠা সাইজ অনুযায়ী ক্যানভাস অ্যাডজাস্ট
-                canvas.width = page.clientWidth;
-                canvas.height = page.clientHeight;
-                
-                attachCanvasEvents(canvas);
+
+                // ক্যানভাস সাইজ নির্ভুলভাবে সেট করা
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+
+                history.set(canvas, { undo: [], redo: [] });
+                saveCanvasState(canvas);
+
+                attachPointerEvents(canvas);
             });
         }
 
-        window.addEventListener('load', setupCanvases);
+        window.addEventListener('load', initCanvases);
         window.addEventListener('resize', () => {
-            // উইন্ডো সাইজ পরিবর্তন হলে ক্যানভাস ঠিক রাখা
             document.querySelectorAll('.page').forEach(page => {
                 const canvas = page.querySelector('.draw-canvas');
-                if (canvas && (canvas.width !== page.clientWidth || canvas.height !== page.clientHeight)) {
-                    canvas.width = page.clientWidth;
-                    canvas.height = page.clientHeight;
+                if (canvas && (canvas.width !== canvas.offsetWidth || canvas.height !== canvas.offsetHeight)) {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
                 }
             });
         });
 
-        // মোড পরিবর্তন
-        function setMode(mode) {
-            currentMode = mode;
-            document.getElementById('btn-scroll').classList.toggle('active', mode === 'scroll');
-            document.getElementById('btn-pen').classList.toggle('active', mode === 'pen');
-            document.getElementById('btn-eraser').classList.toggle('active', mode === 'eraser');
+        // টুলবার খোলা / বন্ধ করা
+        function toggleToolbar() {
+            isToolbarOpen = !isToolbarOpen;
+            const toolbar = document.getElementById('toolbar');
+            toolbar.classList.toggle('open', isToolbarOpen);
 
-            // ক্যানভাসে টাচ অন/অফ করা
+            if (!isToolbarOpen) {
+                closeSettings();
+            }
+
+            // ক্যানভাসে ড্রয়িং অ্যাক্টিভ করা
             document.querySelectorAll('.draw-canvas').forEach(c => {
-                c.style.pointerEvents = (mode === 'scroll') ? 'none' : 'auto';
+                c.style.pointerEvents = isToolbarOpen ? 'auto' : 'none';
             });
         }
 
-        // রঙ ও সাইজ পরিবর্তন
-        function setColor(color, size) {
-            currentColor = color;
-            currentLineWidth = size;
-            setMode('pen');
-
-            // রঙের বর্ডারে অ্যাক্টিভ ক্লাস দেওয়া
-            document.querySelectorAll('.color-dot').forEach(dot => {
-                dot.classList.remove('active');
-                if (dot.getAttribute('onclick').includes(color)) {
-                    dot.classList.add('active');
-                }
-            });
+        // টুল সিলেক্ট করা
+        function selectTool(tool) {
+            currentTool = tool;
+            document.getElementById('btn-pen').classList.toggle('active', tool === 'pen');
+            document.getElementById('btn-highlighter').classList.toggle('active', tool === 'highlighter');
+            document.getElementById('btn-eraser').classList.toggle('active', tool === 'eraser');
+            
+            if (isSettingsOpen) {
+                updateSettingsUI();
+            }
         }
 
-        // ক্যানভাসে ইভেন্ট যুক্ত করা (মাউস এবং টাচ)
-        function attachCanvasEvents(canvas) {
+        // কালার ও সাইজ সেটিংস প্যানেল
+        function toggleSettings() {
+            isSettingsOpen = !isSettingsOpen;
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('open', isSettingsOpen);
+            if (isSettingsOpen) {
+                updateSettingsUI();
+            }
+        }
+
+        function closeSettings() {
+            isSettingsOpen = false;
+            document.getElementById('settingsPanel').classList.remove('open');
+        }
+
+        function updateSettingsUI() {
+            const title = document.getElementById('panelTitle');
+            const colorList = document.getElementById('colorList');
+            const slider = document.getElementById('sizeSlider');
+            const previewDot = document.getElementById('previewDot');
+
+            colorList.innerHTML = '';
+
+            if (currentTool === 'pen') {
+                title.innerText = 'কলমের কালার ও সাইজ';
+                colorList.style.display = 'flex';
+                slider.min = 1;
+                slider.max = 14;
+                slider.value = penSize;
+                previewDot.style.background = penColor;
+                previewDot.style.width = penSize * 2 + 'px';
+                previewDot.style.height = penSize * 2 + 'px';
+
+                penColors.forEach(c => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'color-bubble' + (c === penColor ? ' selected' : '');
+                    bubble.style.background = c;
+                    bubble.onclick = () => {
+                        penColor = c;
+                        document.getElementById('pen-indicator').style.background = c;
+                        updateSettingsUI();
+                    };
+                    colorList.appendChild(bubble);
+                });
+            } else if (currentTool === 'highlighter') {
+                title.innerText = 'হাইলাইটারের কালার ও সাইজ';
+                colorList.style.display = 'flex';
+                slider.min = 10;
+                slider.max = 35;
+                slider.value = highlighterSize;
+                previewDot.style.background = highlighterColor;
+                previewDot.style.width = Math.min(26, highlighterSize) + 'px';
+                previewDot.style.height = Math.min(26, highlighterSize) + 'px';
+
+                highlighterColors.forEach(c => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'color-bubble' + (c === highlighterColor ? ' selected' : '');
+                    bubble.style.background = c;
+                    bubble.onclick = () => {
+                        highlighterColor = c;
+                        document.getElementById('highlighter-indicator').style.background = c;
+                        updateSettingsUI();
+                    };
+                    colorList.appendChild(bubble);
+                });
+            } else {
+                title.innerText = 'রাবারের সাইজ';
+                colorList.style.display = 'none'; // রাবারের কালার লাগে না
+                slider.min = 8;
+                slider.max = 50;
+                slider.value = eraserSize;
+                previewDot.style.background = '#94A3B8';
+                previewDot.style.width = Math.min(28, eraserSize / 1.5) + 'px';
+                previewDot.style.height = Math.min(28, eraserSize / 1.5) + 'px';
+            }
+        }
+
+        function changeSize(val) {
+            val = parseInt(val);
+            const previewDot = document.getElementById('previewDot');
+            if (currentTool === 'pen') {
+                penSize = val;
+                previewDot.style.width = val * 2 + 'px';
+                previewDot.style.height = val * 2 + 'px';
+            } else if (currentTool === 'highlighter') {
+                highlighterSize = val;
+                previewDot.style.width = Math.min(26, val) + 'px';
+                previewDot.style.height = Math.min(26, val) + 'px';
+            } else {
+                eraserSize = val;
+                previewDot.style.width = Math.min(28, val / 1.5) + 'px';
+                previewDot.style.height = Math.min(28, val / 1.5) + 'px';
+            }
+        }
+
+        // আনডু ও রিডু হ্যান্ডলার
+        function saveCanvasState(canvas) {
+            const ctx = canvas.getContext('2d');
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const h = history.get(canvas);
+            if (h) {
+                h.undo.push(data);
+                if (h.undo.length > 20) h.undo.shift();
+                h.redo = [];
+            }
+        }
+
+        function undo() {
+            if (!activeCanvas) activeCanvas = document.querySelector('.draw-canvas');
+            const h = history.get(activeCanvas);
+            if (h && h.undo.length > 1) {
+                const current = h.undo.pop();
+                h.redo.push(current);
+                const prev = h.undo[h.undo.length - 1];
+                activeCanvas.getContext('2d').putImageData(prev, 0, 0);
+            }
+        }
+
+        function redo() {
+            if (!activeCanvas) activeCanvas = document.querySelector('.draw-canvas');
+            const h = history.get(activeCanvas);
+            if (h && h.redo.length > 0) {
+                const next = h.redo.pop();
+                h.undo.push(next);
+                activeCanvas.getContext('2d').putImageData(next, 0, 0);
+            }
+        }
+
+        // ================= সর্বাধুনিক ড্রয়িং ইঞ্জিন (Pointer Events) =================
+        function attachPointerEvents(canvas) {
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
             let lastX = 0, lastY = 0;
 
-            function getPos(e) {
+            function getCoordinates(e) {
                 const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
                 return {
-                    x: clientX - rect.left,
-                    y: clientY - rect.top
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
                 };
             }
 
-            function start(e) {
-                if (currentMode === 'scroll') return;
+            canvas.addEventListener('pointerdown', (e) => {
+                if (!isToolbarOpen) return;
+                activeCanvas = canvas;
                 isDrawing = true;
-                const pos = getPos(e);
+                canvas.setPointerCapture(e.pointerId); // স্ক্রিন স্ক্রল বন্ধ রেখে নিখুঁত দাগানো
+                
+                const pos = getCoordinates(e);
                 lastX = pos.x;
                 lastY = pos.y;
-            }
+            });
 
-            function move(e) {
-                if (!isDrawing || currentMode === 'scroll') return;
-                e.preventDefault(); // মোবাইলে টাচ করার সময় স্ক্রল হওয়া আটকাবে
-                
-                const pos = getPos(e);
+            canvas.addEventListener('pointermove', (e) => {
+                if (!isDrawing || !isToolbarOpen) return;
+                const pos = getCoordinates(e);
+
                 ctx.beginPath();
                 ctx.moveTo(lastX, lastY);
                 ctx.lineTo(pos.x, pos.y);
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
 
-                if (currentMode === 'eraser') {
-                    // রাবার দিয়ে মোছা
+                if (currentTool === 'eraser') {
                     ctx.globalCompositeOperation = 'destination-out';
-                    ctx.lineWidth = 18;
-                } else {
-                    // কলম বা হাইলাইটার দিয়ে দাগানো
+                    ctx.lineWidth = eraserSize;
+                } else if (currentTool === 'highlighter') {
                     ctx.globalCompositeOperation = 'source-over';
-                    ctx.strokeStyle = currentColor;
-                    ctx.lineWidth = currentLineWidth;
+                    ctx.strokeStyle = highlighterColor;
+                    ctx.lineWidth = highlighterSize;
+                } else {
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = penColor;
+                    ctx.lineWidth = penSize;
                 }
 
                 ctx.stroke();
                 lastX = pos.x;
                 lastY = pos.y;
+            });
+
+            function endDrawing(e) {
+                if (isDrawing) {
+                    isDrawing = false;
+                    try { canvas.releasePointerCapture(e.pointerId); } catch(err){}
+                    saveCanvasState(canvas);
+                }
             }
 
-            function stop() {
-                isDrawing = false;
-            }
-
-            // মাউস ইভেন্ট
-            canvas.addEventListener('mousedown', start);
-            canvas.addEventListener('mousemove', move);
-            canvas.addEventListener('mouseup', stop);
-            canvas.addEventListener('mouseleave', stop);
-
-            // টাচ ইভেন্ট (মোবাইল)
-            canvas.addEventListener('touchstart', start, { passive: false });
-            canvas.addEventListener('touchmove', move, { passive: false });
-            canvas.addEventListener('touchend', stop);
+            canvas.addEventListener('pointerup', endDrawing);
+            canvas.addEventListener('pointercancel', endDrawing);
         }
 
-        // দাগ মুছার বাটন
-        function clearCurrentPage() {
-            if (confirm("আপনি কি এই পৃষ্ঠার সমস্ত দাগ মুছে ফেলতে চান?")) {
-                document.querySelectorAll('.draw-canvas').forEach(canvas => {
-                    const ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                });
+        // ================= নিখুঁত ড্র্যাগ ও ড্রপ হ্যান্ডলার =================
+        const dragContainer = document.getElementById('draggableToolbar');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        let isDragging = false;
+        let startClientX = 0, startClientY = 0;
+        let initialContainerLeft = 0, initialContainerTop = 0;
+        let hasMovedDistance = 0;
+
+        toggleBtn.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            hasMovedDistance = 0;
+            startClientX = e.clientX;
+            startClientY = e.clientY;
+
+            const rect = dragContainer.getBoundingClientRect();
+            initialContainerLeft = rect.left;
+            initialContainerTop = rect.top;
+
+            dragContainer.style.right = 'auto';
+            dragContainer.style.bottom = 'auto';
+            dragContainer.style.left = initialContainerLeft + 'px';
+            dragContainer.style.top = initialContainerTop + 'px';
+
+            toggleBtn.setPointerCapture(e.pointerId);
+        });
+
+        toggleBtn.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startClientX;
+            const dy = e.clientY - startClientY;
+            hasMovedDistance = Math.hypot(dx, dy);
+
+            if (hasMovedDistance > 6) { // ৬ পিক্সেল নড়লে ড্র্যাগ মোড সক্রিয় হবে
+                let newX = initialContainerLeft + dx;
+                let newY = initialContainerTop + dy;
+
+                const pad = 8;
+                const maxX = window.innerWidth - dragContainer.offsetWidth - pad;
+                const maxY = window.innerHeight - dragContainer.offsetHeight - pad;
+
+                newX = Math.max(pad, Math.min(newX, maxX));
+                newY = Math.max(pad, Math.min(newY, maxY));
+
+                dragContainer.style.left = newX + 'px';
+                dragContainer.style.top = newY + 'px';
             }
-        }
+        });
+
+        toggleBtn.addEventListener('pointerup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            try { toggleBtn.releasePointerCapture(e.pointerId); } catch(err){}
+
+            // যদি ড্র্যাগ না করে শুধুমাত্র ট্যাপ/ক্লিক করা হয়
+            if (hasMovedDistance <= 6) {
+                toggleToolbar();
+            }
+        });
+
+        toggleBtn.addEventListener('pointercancel', () => { isDragging = false; });
     </script>
 </body>
 </html>
